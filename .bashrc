@@ -39,8 +39,8 @@ parse_git_branch(){
 	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-colGreen="\[\033[01;32m\]"
-colWhite="\[\033[01;37m\]"
+colGreen="\[\033[01;32m\]\[\033[01;1m\]"
+colWhite="\[\033[01;93m\]"
 noCol="\[\033[00m\]"
 usuario="\u@\h"
 directorio="\W"
