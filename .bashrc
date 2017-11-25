@@ -39,7 +39,7 @@ parse_git_branch(){
 	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-colGreen="\[\033[01;32m\]\[\033[01;1m\]"
+colGreen="\[\033[01;36m\]\[\033[01;1m\]"
 colWhite="\[\033[01;93m\]"
 noCol="\[\033[00m\]"
 usuario="\u@\h"
@@ -47,7 +47,13 @@ directorio="\W"
 branchGit="\$(parse_git_branch)"
 promtEnding="$ "
 
-export PS1="$colGreen[$usuario$colWhite $directorio$colGreen]$noCol$branchGit$colGreen$promtEnding$noCol"
+#export PS1="$colGreen[$usuario$colWhite $directorio$colGreen]$noCol$branchGit$colGreen$promtEnding$noCol"
+export PS1="$colGreen\$ $directorio>$noCol"
+export TRMINAL='xfce4-terminal'
+export EDITOR='/usr/bin/nvim'
+
+## ASCII ART
+cat ~/.bash_msg | lolcat
 
 ## aliases
 alias ..="cd .."
@@ -57,5 +63,7 @@ alias us="setxkbmap us"
 alias es="setxkbmap es"
 alias :v="pacman"
 alias tarzan="tar -cvfz"
+alias vim="nvim"
+alias i3conf="nvim ~/.config/i3/config"
 cls() { cd "$@" && ls; }
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
