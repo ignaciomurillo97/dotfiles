@@ -55,6 +55,9 @@ export EDITOR='/usr/bin/nvim'
 ## ASCII ART
 cat ~/.bash_msg | lolcat
 
+## Vi mode
+set -o vi
+
 ## aliases
 alias ..="cd .."
 alias ~="cd"
@@ -65,5 +68,12 @@ alias :v="pacman"
 alias tarzan="tar -cvfz"
 alias vim="nvim"
 alias i3conf="nvim ~/.config/i3/config"
+alias sisas="sudo"
+alias sim="cd ~/Documents/TEC/Verano2017/ && ls"
+alias ="clear"
+processingInit() { mkdir "$@" && cd "$@" && vim "$@.pde"; }
 cls() { cd "$@" && ls; }
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"

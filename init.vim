@@ -10,11 +10,16 @@ set smartindent
 set expandtab
 set clipboard=unnamedplus
 set grepprg=grep\ -nH\ $*
+set textwidth=80
+set formatoptions+=w
+set splitright
+set splitbelow
+set mouse=a
+g:loaded_python_provider=1
 let g:tex_flavor='latex'
+let NERDTreeQuitOnOpen=1
 filetype plugin on
 syntax on
-"Sudo guardadito pls
-cmap w!! w !sudo tee > /dev/null %
 
 "Plugins
 call plug#begin('~/.local/share/nvim/plugged')
@@ -23,13 +28,20 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'yuttie/comfortable-motion.vim'
-Plug 'vim-latex/vim-latex'
-Plug 'tomasr/molokai'
+"Plug 'vim-latex/vim-latex'
+Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
-"Plug 'jiangmiao/auto-pairs'
-Plug 'ap/vim-css-color'
+Plug 'chrisbra/Colorizer'
 Plug 'junegunn/goyo.vim'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'sophacles/vim-processing'
+Plug 'wincent/scalpel'
+Plug 'neomake/neomake'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'tpope/vim-eunuch'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -37,44 +49,41 @@ call plug#end()
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_ViewRule_pdf = 'zathura'
 
-"Theme
-colorscheme molokai
-let g:molokai_original = 1
-
 "Remap leader key
-let mapleader = ","
+let mapleader = " "
+let maplocalleader = ","
 
-" Shortcuts
-tnoremap ;l <C-\><C-N>
-
-"nmap <Cr> o<Esc>
-nmap <leader>o :only<Cr>
-
-noremap <leader>f :FZF<Cr> 
-noremap <leader>r :NERDTreeToggle<Cr> 
-noremap <leader>t :tabedit term://bash<Cr>
-noremap <leader>c :tabedit ~/.config/nvim/init.vim<Cr>
+" Theme
+source ~/.config/nvim/colorscheme.vim
 
 "Custom autoclose
-inoremap [] []<Esc>i
-inoremap [ []<Esc>i
-inoremap [<Space> [<Space><Space>]<Esc>hi
+source ~/.config/nvim/autoclose.vim
 
-inoremap {} {}<Esc>i
-inoremap {<Space> {<Space><Space>}<Esc>hi
-inoremap {<Cr> {<Cr>}<Esc>O
+" Mappings
+source ~/.config/nvim/mappings.vim
 
-inoremap () ()<Esc>i
-inoremap ( ()<Esc>i
-inoremap (<Space> (<Space><Space>)<Esc>hi
+" Auto populate files:
+   " vimrc
+command! ReSauce :source ~/.config/nvim/init.vim
 
-inoremap "" ""<Esc>i
-inoremap " ""<Esc>i
+   " processing:
+augroup processing
+   autocmd!
+   autocmd BufNewFile,BufReadPost *.pde source ~/.config/nvim/ftplugin/processig.vim
+augroup END
 
-"Skip to next autolose
-inoremap <C-Space> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
-noremap <C-Space> /[)}"'\]>]<CR>:nohl<CR>
+" quickfix window
+au FileType qf wincmd J 
 
-" add colon at end
-inoremap <C-s> <Esc>A;
-noremap <C-s> A;<Esc>
+" execute after plugins load
+augroup vimenter
+   autocmd!
+   autocmd VimEnter * nnoremap <C-J> <C-W><C-J>
+   autocmd VimEnter * nnoremap <C-K> <C-W><C-K>
+   autocmd VimEnter * nnoremap <C-L> <C-W><C-L>
+   autocmd VimEnter * nnoremap <C-H> <C-W><C-H>
+augroup END
+
+" Move VISUAL LINE selection within buffer.
+xnoremap <silent> K :call nacho#visual#move_up()<CR>
+xnoremap <silent> J :call nacho#visual#move_down()<CR>
