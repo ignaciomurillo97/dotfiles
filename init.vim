@@ -15,8 +15,10 @@ set formatoptions+=w
 set splitright
 set splitbelow
 set mouse=a
-g:loaded_python_provider=1
+let g:python_host_prog='/usr/bin/python'
+let g:python3_host_prog='/usr/bin/python3'
 let g:tex_flavor='latex'
+let g:deoplete#enable_at_startup = 1
 let NERDTreeQuitOnOpen=1
 filetype plugin on
 syntax on
@@ -42,6 +44,14 @@ Plug 'vim-pandoc/vim-pandoc'
 Plug 'tpope/vim-eunuch'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 call plug#end()
 
@@ -87,3 +97,12 @@ augroup END
 " Move VISUAL LINE selection within buffer.
 xnoremap <silent> K :call nacho#visual#move_up()<CR>
 xnoremap <silent> J :call nacho#visual#move_down()<CR>
+
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
